@@ -15,8 +15,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //신규 데이터베이스 객체 생성=메모리에 올리기=실행가능하게 만들기(아래)
         //=데이터베이스헬퍼클래스의 생성자 매서드 실행
-        mDatabaseHelper = new DatabaseHelper(this,"student.db",null,1);
+        mDatabaseHelper = new DatabaseHelper(this,"school.db",null,1);
         //데이터베이스 파일 만들기(아래)
-
+        mSqLiteDatabase = mDatabaseHelper.getWritableDatabase();
     }
 }
