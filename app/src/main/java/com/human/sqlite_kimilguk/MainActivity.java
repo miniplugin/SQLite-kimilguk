@@ -18,5 +18,7 @@ public class MainActivity extends AppCompatActivity {
         mDatabaseHelper = new DatabaseHelper(this,"school.db",null,1);
         //데이터베이스 파일 만들기(아래)
         mSqLiteDatabase = mDatabaseHelper.getWritableDatabase();
+        //테스트로 mSqLiteDatabse 객체를 이용해서 더미데이터 인서트 테스트
+
     }
 }
