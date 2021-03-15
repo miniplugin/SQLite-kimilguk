@@ -14,6 +14,13 @@ public class StudentVO {
     //이름
     private String mName;
 
+    public StudentVO(int p_id, int p_grade, int p_number, String p_name) {
+        mId = p_id;
+        mGrade = p_grade;
+        mNumber = p_number;
+        mName = p_name;
+    }
+
     public int getmId() {
         return mId;
     }
