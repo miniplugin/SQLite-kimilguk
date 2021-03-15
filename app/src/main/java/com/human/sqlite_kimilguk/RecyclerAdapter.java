@@ -45,13 +45,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
     }
 
     //아래 온바인드뷰홀더에서 mList값을 사용하려면, mList값을 생성(위)
-    //뷰홀더를 클릭했을때, 뷰홀더와 포지션pos를 이용해서 입력박스에 기존값 출력하기
+    //뷰홀더와 포지션pos를 이용해서 xml디자인textView item에 기존값 출력하기
     //개발자가 호출하는 것이 아니고, 안드로이드의 레이아웃 관리자프로그램이 자동으로 호출함.
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         //구현은 개발자가 코딩함(아래)
         StudentVO studentVO = (StudentVO) mList.get(position);//1개레코드저장
-
+        //리사이클러뷰의 recyclerview_item.xml디자인에 데이터를 출력합니다.
+        holder.itemGrade.setText(Integer.toString(studentVO.getmGrade()));
+        holder.itemNumber.setText(Integer.toString(studentVO.getmNumber()));
+        holder.itemName.setText(studentVO.getmName());
     }
 
     @Override
