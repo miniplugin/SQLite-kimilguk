@@ -39,8 +39,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         return new ItemViewHolder(view);
     }
 
+    //생성자 매서드: 메인액티비티java에서 호출하면서 매개변수 리스트쿼리값을 보냅니다.
+    public RecyclerAdapter(List itemList) {
+        mList = itemList;//현재 클래스에서 최초로 실행
+    }
+
+    //아래 온바인드뷰홀더에서 mList값을 사용하려면, mList값을 생성(위)
+    //뷰홀더를 클릭했을때, 뷰홀더와 포지션pos를 이용해서 입력박스에 기존값 출력하기
+    //개발자가 호출하는 것이 아니고, 안드로이드의 레이아웃 관리자프로그램이 자동으로 호출함.
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
+        //구현은 개발자가 코딩함(아래)
+        StudentVO studentVO = (StudentVO) mList.get(position);//1개레코드저장
 
     }
 
