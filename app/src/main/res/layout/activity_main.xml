@@ -36,7 +36,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutClassNo"
+        android:id="@+id/layoutNumber"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:orientation="horizontal"
@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/layoutGrade">
 
         <TextView
-            android:id="@+id/textViewClassNo"
+            android:id="@+id/textViewNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -55,7 +55,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/editTextClassNo"
+            android:id="@+id/editTextNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -72,7 +72,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutClassNo">
+        app:layout_constraintTop_toBottomOf="@+id/layoutNumber">
 
         <TextView
             android:id="@+id/textViewName"
