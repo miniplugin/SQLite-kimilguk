@@ -79,9 +79,10 @@ public class MainActivity extends AppCompatActivity {
     private void bindList() {
         //객체 생성
         mRecyclerAdapter = new RecyclerAdapter(mItemList);
+        //어댑터의 OnItemClickListener 추가예정....
+
         //리사이클러뷰xml과 어댑터 바인딩(attach) No adapter attached
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-
         recyclerView.setHasFixedSize(true);//리사이클러 뷰의 높이를 고정한다.
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mRecyclerAdapter);//실제 attach(바인딩)
