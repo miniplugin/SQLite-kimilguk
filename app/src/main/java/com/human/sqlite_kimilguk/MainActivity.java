@@ -65,7 +65,25 @@ public class MainActivity extends AppCompatActivity {
         btnUpdate();
         //delete버튼 클릭이벤트(아래)
         btnDelete();
+        //insert버튼 클릭이벤트(아래)
+        btnInsert();
     }
+
+    private void btnInsert() {
+        mButtonInsert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mEditTextGrade.getText().toString() == "" || mEditTextNumber.getText().toString() == "") {
+                    Toast.makeText(getApplicationContext(),"학년/학번 값은 필수 입니다.",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                final int grade = Integer.parseInt(mEditTextGrade.getText().toString());
+                final int number = Integer.parseInt(mEditTextNumber.getText().toString());
+                final String name = mEditTextName.getText().toString();
+            }
+        });
+    }
+
     //delete버튼 클릭이벤트(아래)
     private void btnDelete() {
         mButtonDelete.setOnClickListener(new View.OnClickListener() {
