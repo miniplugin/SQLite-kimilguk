@@ -1,5 +1,6 @@
 package com.human.sqlite_kimilguk;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText mEditTextNumber;
     private EditText mEditTextName;
     //어댑터에서 선택한 값확인 변수
-    private int currentCursorId = 1;
+    private int currentCursorId = -1;
     //버튼 Button 변수선언
     private Button mButtonInsert;
     private Button mButtonUpdate;
@@ -62,16 +63,67 @@ public class MainActivity extends AppCompatActivity {
         updateList();//여기에서 데이터바인딩되서 RecyclerAdaper가 화면에 재생됩니다.
         //update버튼 클릭이벤트(아래)
         btnUpdate();
+        //delete버튼 클릭이벤트(아래)
+        btnDelete();
     }
+    //delete버튼 클릭이벤트(아래)
+    private void btnDelete() {
+        mButtonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentCursorId == -1) {
+                    Toast.makeText(getApplicationContext(),"선택된 값이 없습니다.",Toast.LENGTH_SHORT).show();
+                    return;//선택된 값이 없으면 삭제이벤트는 종료하기
+                }
+                //삭제쿼리 호출
+                deleteData(currentCursorId);
+                //EditText객체의 값 비우기
+                mEditTextGrade.setText("");
+                mEditTextNumber.setText("");
+                mEditTextName.setText("");
+                currentCursorId = -1;//현재 테이블커서ID가 지워졌으니, 초기화시킴
+                //리사이클러뷰 화면 리프레시(아래)
+                updateList();
+            }
+        });
+    }
+
+    private void deleteData(int currentCursorId) {
+        //SQLiteDatabase 템플릿 delete메서드 실행
+        mSqLiteDatabase.delete(StudentTable.TABLE_NAME,StudentTable._ID+"="+currentCursorId,null);
+    }
+
     //update버튼 클릭이벤트(아래)
     private void btnUpdate() {
         mButtonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(currentCursorId == -1) {
+                    Toast.makeText(getApplicationContext(),"선택된 값이 없습니다.",Toast.LENGTH_SHORT).show();
+                    return;//클릭이벤트 진행중지
+                }
+                //DB갱신
+                final int grade = Integer.parseInt(mEditTextGrade.getText().toString());
+                final int number = Integer.parseInt(mEditTextNumber.getText().toString());
+                final String name = mEditTextName.getText().toString();
+                //쿼리메서드 호출
+                updateData(currentCursorId,grade,number,name);
+                //화면 리프레시 재생(아래)
+                updateList();
             }
         });
     }
+    //update버튼에 대한 쿼리
+    private void updateData(int currentCursorId, int grade, int number, String name) {
+        //쿼리 매개변수로 1개의 객체에 값을 담기 위해서 객체변수 생성(아래)
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(StudentTable.GRADE,grade);
+        contentValues.put(StudentTable.NUMBER,number);
+        contentValues.put(StudentTable.NAME,name);
+        //SQLiteDatabase에 있는 템플릿메서드중 update사용(아래)
+        mSqLiteDatabase.update(StudentTable.TABLE_NAME,contentValues,StudentTable._ID+"="+currentCursorId,null);
+    }
+
     //멤버변수로 객체 초기화(아래)
     private void bindObject() {
         //EditText변수를 객체로 생성(아래3줄)
