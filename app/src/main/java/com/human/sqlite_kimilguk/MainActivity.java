@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private Button mButtonInsert;
     private Button mButtonUpdate;
     private Button mButtonDelete;
+    //가상키보드제어하는 변수선언
+    private InputMethodManager mInputMethodManager;
 
     //메인액티비티가 실행되면, 자동으로 실행되는 메서드 onCreate 입니다.
     @Override
@@ -69,21 +72,46 @@ public class MainActivity extends AppCompatActivity {
         btnInsert();
     }
 
+    //EditText 콤포넌트 입력값 없애기
+    private void clearComponent() {
+        //EditText객체의 값 비우기
+        mEditTextGrade.setText("");
+        mEditTextNumber.setText("");
+        mEditTextName.setText("");
+        currentCursorId = -1;//현재 테이블커서ID가 지워졌으니, 초기화시킴
+    }
+    //insert버튼 클릭이벤트(아래)
     private void btnInsert() {
         mButtonInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mEditTextGrade.getText().toString() == "" || mEditTextNumber.getText().toString() == "") {
+                //"".equals()공백체크 && 오브젝트 == null체크 2개의 조건을 1개로 해결한 매서드 isEmpty() 로 개선.
+                if(mEditTextGrade.getText().toString().isEmpty() || "".equals(mEditTextNumber.getText().toString())) {
                     Toast.makeText(getApplicationContext(),"학년/학번 값은 필수 입니다.",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 final int grade = Integer.parseInt(mEditTextGrade.getText().toString());
                 final int number = Integer.parseInt(mEditTextNumber.getText().toString());
                 final String name = mEditTextName.getText().toString();
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(StudentTable.GRADE,grade);
+                contentValues.put(StudentTable.NUMBER,number);
+                contentValues.put(StudentTable.NAME,name);
+                //insert쿼리 호출
+                insertData(contentValues);
+                //EditText 콤포넌트 입력값 없애기
+                clearComponent();
+                //화면 리프레스
+                updateList();
+                //키보드 숨기기
+                mInputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
     }
-
+    //SQLiteDatabase 템플릿 insert메서드 실행
+    private void insertData(ContentValues contentValues) {
+        mSqLiteDatabase.insert(StudentTable.TABLE_NAME,null,contentValues);
+    }
     //delete버튼 클릭이벤트(아래)
     private void btnDelete() {
         mButtonDelete.setOnClickListener(new View.OnClickListener() {
@@ -95,19 +123,15 @@ public class MainActivity extends AppCompatActivity {
                 }
                 //삭제쿼리 호출
                 deleteData(currentCursorId);
-                //EditText객체의 값 비우기
-                mEditTextGrade.setText("");
-                mEditTextNumber.setText("");
-                mEditTextName.setText("");
-                currentCursorId = -1;//현재 테이블커서ID가 지워졌으니, 초기화시킴
+                //EditText콤포넌트 값 없애기
+                clearComponent();
                 //리사이클러뷰 화면 리프레시(아래)
                 updateList();
             }
         });
     }
-
+    //SQLiteDatabase 템플릿 delete메서드 실행
     private void deleteData(int currentCursorId) {
-        //SQLiteDatabase 템플릿 delete메서드 실행
         mSqLiteDatabase.delete(StudentTable.TABLE_NAME,StudentTable._ID+"="+currentCursorId,null);
     }
 
@@ -152,8 +176,10 @@ public class MainActivity extends AppCompatActivity {
         mButtonInsert = findViewById(R.id.btnInsert);
         mButtonUpdate = findViewById(R.id.btnUpdate);
         mButtonDelete = findViewById(R.id.btnDelete);
+        //키보드제어 객체 생성(아래)
+        mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
     }
-
+    //화면 리프레스
     private void updateList() {
         mItemList.clear();
         mItemList.addAll(getAllData());
