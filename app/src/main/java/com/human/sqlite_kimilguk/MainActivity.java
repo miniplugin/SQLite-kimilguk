@@ -4,7 +4,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,6 +27,12 @@ public class MainActivity extends AppCompatActivity {
     private EditText mEditTextGrade;
     private EditText mEditTextNumber;
     private EditText mEditTextName;
+    //어댑터에서 선택한 값확인 변수
+    private int currentCursorId = 1;
+    //버튼 Button 변수선언
+    private Button mButtonInsert;
+    private Button mButtonUpdate;
+    private Button mButtonDelete;
 
     //메인액티비티가 실행되면, 자동으로 실행되는 메서드 onCreate 입니다.
     @Override
@@ -46,14 +54,34 @@ public class MainActivity extends AppCompatActivity {
         mSqLiteDatabase.insert(StudentTable.TABLE_NAME,null,contentValues);
         */
         //mItemList에 셀렉트 쿼리 결과값이 셋 되어 있어야 함.
-        //EditText변수를 객체로 생성(아래3줄)
-        mEditTextGrade = findViewById(R.id.editTextGrade);
-        mEditTextNumber = findViewById(R.id.editTextNumber);
-        mEditTextName = findViewById(R.id.editTextName);
+        //멤버변수로 객체 초기화(아래)
+        bindObject();
         //List 실행 리사이클러 어댑터 바인딩(아래)
         bindList();//여서는 공간마련
         //List 반영(화면출력: 입력,수정,삭제시 화면 리프레시가 필요하고, 구현하는 메서드)
         updateList();//여기에서 데이터바인딩되서 RecyclerAdaper가 화면에 재생됩니다.
+        //update버튼 클릭이벤트(아래)
+        btnUpdate();
+    }
+    //update버튼 클릭이벤트(아래)
+    private void btnUpdate() {
+        mButtonUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+    //멤버변수로 객체 초기화(아래)
+    private void bindObject() {
+        //EditText변수를 객체로 생성(아래3줄)
+        mEditTextGrade = findViewById(R.id.editTextGrade);
+        mEditTextNumber = findViewById(R.id.editTextNumber);
+        mEditTextName = findViewById(R.id.editTextName);
+        //Button변수를 객체로 생성(아래3줄)
+        mButtonInsert = findViewById(R.id.btnInsert);
+        mButtonUpdate = findViewById(R.id.btnUpdate);
+        mButtonDelete = findViewById(R.id.btnDelete);
     }
 
     private void updateList() {
@@ -96,9 +124,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View v, int position) {
                 StudentVO studentVO = (StudentVO) mItemList.get(position);
+                //디버그
+                currentCursorId = studentVO.getmId();
+                Toast.makeText(getApplicationContext(),"현재 선택한 커서레코드 ID는 "+currentCursorId,Toast.LENGTH_SHORT).show();
                 mEditTextGrade.setText(Integer.toString(studentVO.getmGrade()));
-                mEditTextNumber.setText(studentVO.getmNumber());
-                studentVO.getmName();
+                mEditTextNumber.setText(Integer.toString(studentVO.getmNumber()));
+                mEditTextName.setText(studentVO.getmName());
             }
         });
         //리사이클러뷰xml과 어댑터 바인딩(attach) No adapter attached
