@@ -1,3 +1,7 @@
+#### 작업결과
+- 작업결과 미리보기(아래)
+![ex_screenshot](./capture.png)
+
 #### 개선사항.
 - 람다식으로 된 소스를 일반코드로 변경처리(수업시 람다식 연습예정)
 - android.support.v7 버전코드를 androidx.~ 최신버전으로 마이그레이션
@@ -23,3 +27,7 @@ Update구현, Delete구현, Create구현OK.
 - 특징3: 리스트뷰 보다 다양한 형태로 커스터마이징이 가능함.
 - RecyclerView 예제: https://webnautes.tistory.com/1214
 - 3개 객체: List객체(DB)<->어댑터클래스<->리사이클러뷰 콤포넌트
+
+#### 기술참조
+- 내용: https://parkho79.tistory.com/126
+- 소스: https://github.com/parkho79/FromSQLiteToRoom_1
